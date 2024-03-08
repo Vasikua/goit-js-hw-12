@@ -8,7 +8,7 @@ const KEY = '42549902-185aac32f1223c9241b6c0bc7';
 const BASE_URI = 'https://pixabay.com/api/';
 const loader = document.querySelector('.loader');
 
-export async function getImages(QUERY) {
+export async function getImages(QUERY, page) {
     loader.style.display = 'block';
     try {
         const response = await axios.get(BASE_URI, {
@@ -18,7 +18,7 @@ export async function getImages(QUERY) {
                 image_type: 'photo',
                 orientation: 'horizontal',
                 safesearch: true,
-                page: 1,
+                page: page,
                 per_page: 15,
             },
         });
@@ -30,8 +30,8 @@ export async function getImages(QUERY) {
                     });
         }
                    
-                loader.style.display = 'none';
-                 return data;
+        loader.style.display = 'none';
+        return data;
     } catch (error) {
     console.error('Error ', error.message);
         }

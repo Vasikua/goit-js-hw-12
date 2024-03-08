@@ -4,7 +4,7 @@ import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 
 
-let page; 
+let page = 1; 
 let per_page;
 const gallery = document.querySelector('.gallery');
 const form = document.querySelector('form');
@@ -17,13 +17,11 @@ form.addEventListener('submit', (event) => {
     gallery.innerHTML = "";
     const QUERY = event.target.elements.serchfield.value.trim();
     if (QUERY.length > 0) {
-       
-       getImages(QUERY).then((data) => renderData(data));
-       page = 1;
-       per_page = QUERY;
+        getImages(QUERY, page).then((data) => renderData(data));
+        per_page = QUERY;
         form.reset();
-    }
-    else {
+    
+    } else {
         loadMoreBtn.style.display = 'none';
     }
 });
@@ -32,17 +30,11 @@ form.addEventListener('submit', (event) => {
 loadMoreBtn.addEventListener('click', (event) => {
     page++;
     const QUERY = per_page;
-    getImages(QUERY).then((data) => renderData(data));
-    endOFTheList()
-    
+    getImages(QUERY,page).then((data) => renderData(data));
+    // if (data.totalHits <= ) {
+    //         iziToast.error({
+    //         message: ("We're sorry, but you've reached the end of search results.")
+    //     });
+    //        loadMoreBtn.style.display = 'none';
+    // }
  });
-
-function endOFTheList() {
-    if (data.totalHits <= array) {
-        loadMoreBtn.style.display = 'none';
-        iziToast.error({
-            message: ("We're sorry, but you've reached the end of search results.")
-        });
-
-    }
-}
