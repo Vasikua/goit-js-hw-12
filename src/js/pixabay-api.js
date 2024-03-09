@@ -2,26 +2,25 @@ import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 import axios from "axios";
 
-
-
 const KEY = '42549902-185aac32f1223c9241b6c0bc7';
 const BASE_URI = 'https://pixabay.com/api/';
 const loader = document.querySelector('.loader');
 
-export async function getImages(QUERY, page) {
+export async function getImages(searchTerm, page, per_page) {
     loader.style.display = 'block';
     try {
         const response = await axios.get(BASE_URI, {
             params: {
                 key: KEY,
-                q: QUERY,
+                q: searchTerm,
                 image_type: 'photo',
                 orientation: 'horizontal',
                 safesearch: true,
                 page: page,
-                per_page: 15,
+                per_page: per_page,
             },
         });
+
         const data = response.data;
         if (data.hits.length === 0) {
                     iziToast.error({

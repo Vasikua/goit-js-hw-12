@@ -1,9 +1,8 @@
-
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 
-
 const gallery = document.querySelector('.gallery');
+const img = gallery.querySelectorAll('img');
 const loadMoreBtn = document.querySelector('.add-content');
 const lightbox = new SimpleLightbox(".gallery a", {
     captionPosition: 'bottom',
@@ -20,16 +19,12 @@ const lightbox = new SimpleLightbox(".gallery a", {
     spinner:	true
 });
 export function renderData(data) {
-
-    
-       const img = data.hits;
-       const arrayOfImg = img.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => {
+        const img = data.hits;
+        const arrayOfImg = img.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => {
                 return `<li class="list-link">
-                            
-                                <a href="${largeImageURL}">
+                            <a href="${largeImageURL}">
                                 <img class="gallery-links" src="${webformatURL}" alt="${tags}"></a>
-                            
-                                <div class="parameters">
+                            <div class="parameters">
                                     <ul class="parameters-list">
                                         <li class="parameters-list-item">likes:</li>
                                         <li class="parameters-list-item">${likes}</li>
@@ -47,14 +42,13 @@ export function renderData(data) {
                                         <li class="parameters-list-item">${downloads}</li>
                                     </ul>
                             </div>
-                            </li>`
+                        </li>`
        }).join('');
-        
+     
     gallery.insertAdjacentHTML('beforeend', arrayOfImg);
-    if (arrayOfImg.length > 0) {
+  
+    if (img.length > 14) {
         loadMoreBtn.style.display = 'block';
     }
-    
     lightbox.refresh();
-      
 };

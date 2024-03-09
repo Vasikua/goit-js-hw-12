@@ -3,35 +3,31 @@ import { renderData } from "./js/render-functions";
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 
-
-let page = 1; 
-let per_page;
-let totalHits;
+let page;
+let searchTerm;
+const per_page = 15;
 const gallery = document.querySelector('.gallery');
 const form = document.querySelector('form');
 const loadMoreBtn = document.querySelector('.add-content');
 
-
 form.addEventListener('submit', (event) => {
-
     event.preventDefault();
     gallery.innerHTML = "";
-    const QUERY = event.target.elements.serchfield.value.trim();
-    if (QUERY.length > 0) {
-        getImages(QUERY, page).then((data) => renderData(data));
-        per_page = QUERY;
+    searchTerm = event.target.elements.serchfield.value.trim();
+    
+    if (searchTerm.length > 0) {
+        getImages(searchTerm, page, per_page).then((data) => renderData(data));
+        page = 1;
         form.reset();
     } else {
         loadMoreBtn.style.display = 'none';
     }
 });
 
-
-loadMoreBtn.addEventListener('click', (event) => {
-        page++;
-    const QUERY = per_page;
-  
-    getImages(QUERY, page).then((data) => {
+loadMoreBtn.addEventListener('click', () => {
+    page++;
+     
+    getImages(searchTerm, page, per_page).then((data) => {
         renderData(data); 
         smoothScrolling();
         if (data.hits.length < 15) {
@@ -48,7 +44,7 @@ loadMoreBtn.addEventListener('click', (event) => {
 function smoothScrolling() {
     const pictHeight = gallery.firstElementChild.getBoundingClientRect().height;
     window.scrollBy({
-        top: 4 * pictHeight, 
+        top: 2 * pictHeight, 
         behavior: 'smooth',
     })
 }
